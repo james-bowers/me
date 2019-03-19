@@ -2,6 +2,8 @@ defmodule MeWeb.Router do
   use Plug.Router
   use Plug.Debugger
 
+  alias Me.AccountRoute
+
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],
     pass: ["text/*"],
@@ -16,4 +18,6 @@ defmodule MeWeb.Router do
     |> put_resp_content_type("text/plain")
     |> send_resp(200, "OK")
   end
+
+  forward "/", to: AccountRoute
 end

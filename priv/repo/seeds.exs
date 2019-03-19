@@ -11,3 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 IO.puts("Setting up seed data...")
+
+account1_id = "7119e5c9-37b5-4fb2-bf42-7981f4ec8d6a"
+
+Me.Repo.insert!(%Me.Account{id: account1_id})

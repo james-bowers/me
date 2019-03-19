@@ -27,4 +27,11 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-#     import_config "#{Mix.env()}.exs"
+
+config :me, Me.Repo, migration_primary_key: [name: :id, type: :binary_id]
+
+config :me,
+  ecto_repos: [Me.Repo],
+  generators: [binary_id: true]
+
+import_config "#{Mix.env()}.exs"

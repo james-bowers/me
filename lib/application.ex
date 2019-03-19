@@ -3,7 +3,7 @@ defmodule Me.Application do
 
   def start(_type, _args) do
     children = [
-      # OrderSystem.Repo,
+      Me.Repo,
       Plug.Adapters.Cowboy.child_spec(
         scheme: :http,
         plug: MeWeb.Router,

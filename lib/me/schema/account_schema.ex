@@ -3,16 +3,13 @@ defmodule Me.Account do
   import Ecto.Changeset
 
   schema "account" do
-    field :first_name, :string
-    field :last_name, :string
-    field :active, :integer
-    field :dob, :utc_datetime
-    
+    field(:active, :integer, default: 1)
+
     timestamps()
   end
 
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:first_name, :last_name, :active, :dob])
+    |> cast(attrs, [:active])
   end
 end

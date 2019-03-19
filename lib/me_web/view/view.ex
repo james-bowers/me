@@ -1,6 +1,6 @@
 defmodule MeWeb.View do
   import Plug.Conn
-  
+
   @enforce_keys [:description, :content]
   defstruct [:description, :content]
 

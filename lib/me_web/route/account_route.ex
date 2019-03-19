@@ -2,7 +2,7 @@ defmodule Me.AccountRoute do
   use Plug.Router
   use Plug.Debugger
 
-  alias Me.{AccountController, Account}
+  alias Me.{AccountController}
   alias MeWeb.{AccountView}
 
   plug(:match)

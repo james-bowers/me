@@ -19,5 +19,5 @@ defmodule MeWeb.Router do
     |> send_resp(200, "OK")
   end
 
-  forward "/", to: AccountRoute
+  forward("/", to: AccountRoute)
 end

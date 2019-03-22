@@ -34,4 +34,8 @@ config :me,
   ecto_repos: [Me.Repo],
   generators: [binary_id: true]
 
+config :me, Me.Guardian,
+  issuer: "me",
+  secret_key: "qceC/qyAS7zr+dbkVCR7DIG8szCMWOmH84EQdBjdyyQca49tgrAT6lnLXZoNQfqY"
+
 import_config "#{Mix.env()}.exs"

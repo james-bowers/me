@@ -27,7 +27,8 @@ defmodule Me.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.2.1"},
+      {:bcrypt_elixir, "~> 2.0.1"}
     ]
   end
 

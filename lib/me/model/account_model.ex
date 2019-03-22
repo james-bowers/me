@@ -1,6 +1,10 @@
 defmodule Me.AccountModel do
   alias Ecto.Multi
-  alias Me.{Account}
+  alias Me.{Repo, Account, Guardian}
+
+  def get(account = %Account{}) do
+    Repo.get(Account, account.id)
+  end
 
   def insert() do
     Multi.new()

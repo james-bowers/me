@@ -1,7 +1,7 @@
 defmodule MeWeb.AccountView do
   use MeWeb, :view
   alias MeWeb.View
-  alias Me.Account
+  alias Me.{Account, Guardian}
 
   @display_attributes [:id, :active]
 

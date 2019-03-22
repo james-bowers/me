@@ -2,7 +2,7 @@ defmodule MeWeb.Router do
   use Plug.Router
   use Plug.Debugger
 
-  alias Me.AccountRoute
+  alias Me.{AccountRoute, PersonRoute, RoleRoute}
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :json],
@@ -19,5 +19,7 @@ defmodule MeWeb.Router do
     |> send_resp(200, "OK")
   end
 
-  forward("/", to: AccountRoute)
+  forward("/person", to: PersonRoute)
+  forward("/account", to: AccountRoute)
+  forward("/role", to: RoleRoute)
 end

@@ -16,7 +16,11 @@ defmodule Me.PersonRoute do
     |> PersonView.render(:login, conn)
   end
 
-  # post "/validate" do
-
-  # end
+  post "/sign-up" do
+    PersonController.sign_up(%{
+      password: conn.params["password"],
+      email: conn.params["email"]
+    })
+    |> PersonView.render(:sign_up, conn)
+  end
 end

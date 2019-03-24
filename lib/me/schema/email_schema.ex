@@ -15,5 +15,7 @@ defmodule Me.Email do
   def changeset(account, attrs) do
     account
     |> cast(attrs, [:email, :verified])
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:email)
   end
 end

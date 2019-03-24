@@ -6,8 +6,8 @@ defmodule Me.AccountModel do
     Repo.get(Account, account.id)
   end
 
-  def insert() do
-    Multi.new()
+  def insert(multi \\ Multi.new()) do
+    multi
     |> Multi.insert(:account, insert_changeset())
   end
 

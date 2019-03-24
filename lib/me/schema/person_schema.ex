@@ -2,7 +2,7 @@ defmodule Me.Person do
   use Me.BaseSchema
   import Ecto.Changeset
 
-  alias Me.{Account, Person, Role, Password, Email}
+  alias Me.{Person, Role, Password, Email}
 
   schema "person" do
     field(:first_name, :string)
@@ -15,8 +15,8 @@ defmodule Me.Person do
     timestamps()
   end
 
-  def changeset(account, attrs) do
-    account
+  def changeset(person, attrs) do
+    person
     |> cast(attrs, [:first_name, :last_name])
   end
 end

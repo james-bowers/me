@@ -1,5 +1,23 @@
 defmodule Me.PersonController do
-  alias Me.{Role, Person, Password, PersonModel, RoleController}
+  alias Me.{
+    Repo,
+    Role,
+    Person,
+    Password,
+    PersonModel,
+    RoleController,
+    AccountModel,
+    RoleModel
+  }
+
+  alias Ecto.Multi
+
+  def sign_up(attrs = %{password: _password, email: _email}) do
+    AccountModel.insert()
+    |> PersonModel.insert(attrs)
+    |> Multi.merge(&RoleModel.insert/1)
+    |> Repo.transaction()
+  end
 
   def login(%{password: password, email: email}) do
     PersonModel.get_by_email(email)

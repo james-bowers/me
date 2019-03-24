@@ -3,7 +3,17 @@ defmodule MeWeb.PersonView do
   alias MeWeb.View
   alias Me.{Account, Email, Role, Person, RoleController}
 
-  def render({:ok, %{person: person = %Person{}, role: role = %Role{}, account: account = %Account{}, email: email = %Email{}}}, :sign_up, conn) do
+  def render(
+        {:ok,
+         %{
+           person: person = %Person{},
+           role: role = %Role{},
+           account: account = %Account{},
+           email: email = %Email{}
+         }},
+        :sign_up,
+        conn
+      ) do
     {:ok, token, _claims} = RoleController.sign(role)
 
     conn

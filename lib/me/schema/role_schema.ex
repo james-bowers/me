@@ -14,6 +14,6 @@ defmodule Me.Role do
 
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:permission_level])
+    |> cast(attrs, [:account_id, :person_id, :permission_level])
   end
 end

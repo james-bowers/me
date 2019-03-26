@@ -1,5 +1,5 @@
 defmodule Me.PersonModel do
-  alias Me.{Repo, Email, Person, EmailModel, PasswordModel}
+  alias Me.{Repo, Account, Email, Person, EmailModel, PasswordModel}
   alias Ecto.Multi
 
   def get(person = %Person{}) do
@@ -17,7 +17,7 @@ defmodule Me.PersonModel do
 
   def insert(multi, %{email: email, password: password}) do
     multi
-    |> insert(%{})
+    |> insert_person()
     |> Multi.merge(fn %{person: person} ->
       EmailModel.insert(%{email: email, person_id: person.id})
     end)
@@ -26,8 +26,13 @@ defmodule Me.PersonModel do
     end)
   end
 
-  def insert(multi, _attrs) do
+  def insert(multi, attrs \\ %{}) do
     multi
-    |> Multi.insert(:person, Person.changeset(%Person{}, %{}))
+    |> insert_person(attrs)
+  end
+
+  defp insert_person(multi, attrs \\ %{}) do
+    multi
+    |> Multi.insert(:person, Person.changeset(%Person{}, attrs))
   end
 end

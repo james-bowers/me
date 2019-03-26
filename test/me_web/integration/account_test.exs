@@ -12,7 +12,12 @@ defmodule Test.MeWeb.Integration.Account do
 
     assert String.contains?(
              conn.resp_body,
-             ~s({"description":"A new anonymous account has been created.","content":{"id":")
+             ~s({"description":"A new anonymous account has been created.","content":{"token":")
+           )
+
+    assert String.contains?(
+             conn.resp_body,
+             ~s("account":{"id":)
            )
 
     assert String.contains?(conn.resp_body, ~s("active":1))

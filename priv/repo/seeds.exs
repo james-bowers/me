@@ -17,8 +17,10 @@ account2_id = "d75a9cd2-acec-46be-81e7-84a786971d44"
 account3_id = "6fb779ee-8215-4873-8275-285dccc12f9f"
 
 role1_id = "f8c8a516-ad0a-4409-aca1-40c74b48d81a"
+role2_id = "894940b7-8a1c-4ac6-bc03-06f8be64eaa2"
 
 person1_id = "c6d771c9-debe-4276-bd32-d2ca2b2c394f"
+person2_id = "dc54b524-5da1-4120-9871-a57bc814ba05"
 
 email1_id = "6229f4d1-ee8b-482f-974c-7ed6ed2782c6"
 
@@ -38,11 +40,26 @@ Me.Repo.insert!(%Me.Person{
   updated_at: ~N[2019-03-20 19:26:39]
 })
 
+Me.Repo.insert!(%Me.Person{
+  id: person2_id,
+  inserted_at: ~N[2019-03-20 19:26:39],
+  updated_at: ~N[2019-03-20 19:26:39]
+})
+
 # Role
 Me.Repo.insert!(%Me.Role{
   id: role1_id, 
   account_id: account2_id,
   person_id: person1_id,
+  permission_level: 0,
+  inserted_at: ~N[2019-03-20 19:26:39],
+  updated_at: ~N[2019-03-20 19:26:39]
+})
+
+Me.Repo.insert!(%Me.Role{
+  id: role2_id,
+  account_id: account3_id,
+  person_id: person2_id,
   permission_level: 0,
   inserted_at: ~N[2019-03-20 19:26:39],
   updated_at: ~N[2019-03-20 19:26:39]

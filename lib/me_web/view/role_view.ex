@@ -25,6 +25,25 @@ defmodule MeWeb.RoleView do
     })
   end
 
+  def render(
+        role = %Role{
+          person: person = %Person{},
+          account: account = %Account{}
+        },
+        :validate,
+        conn
+      ) do
+    conn
+    |> send_json(200, %View{
+      description: "Anonymous user role validated",
+      content: %{
+        role: Map.take(role, [:id, :account_id, :person_id]),
+        person: Map.take(person, [:id, :first_name, :last_name]),
+        account: Map.take(account, [:id, :active])
+      }
+    })
+  end
+
   def format_emails(emails) do
     emails
     |> Enum.reduce([], fn email, emails_list ->

@@ -17,6 +17,9 @@ defmodule Test.MeWeb.Integration.Role do
   }
   {:ok, token, _claims} = RoleController.sign(@valid_role)
 
+  {:ok, role_not_found_token, _claims} =
+    RoleController.sign(Map.put(@valid_role, :id, "1cb6865a-b44d-40df-a0dc-f2249e38b54f"))
+
   @valid_body %{
     token: token
   }
@@ -25,8 +28,13 @@ defmodule Test.MeWeb.Integration.Role do
     token: "an invalid token"
   }
 
+  @valid_body_but_role_not_found %{
+    token: role_not_found_token
+  }
+
   test "validate a valid role" do
     conn = conn(:post, "/role/validate", @valid_body)
+
     conn = Router.call(conn, @opts)
 
     assert {200, _headers,
@@ -39,5 +47,12 @@ defmodule Test.MeWeb.Integration.Role do
     conn = Router.call(conn, @opts)
 
     assert {400, _headers, ~s({"description":"Invalid token","content":null})} = sent_resp(conn)
+  end
+
+  test "when a role is not found" do
+    conn = conn(:post, "/role/validate", @valid_body_but_role_not_found)
+    conn = Router.call(conn, @opts)
+
+    assert {404, _headers, ~s({"description":"Role not found","content":null})} = sent_resp(conn)
   end
 end

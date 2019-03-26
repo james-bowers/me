@@ -18,9 +18,5 @@ defmodule Me.RoleRoute do
       {:error, reason} ->
         RoleView.render({:error, reason}, :validate, conn)
     end
-
-    # conn
-    # |> put_resp_content_type("text/plain")
-    # |> send_resp(200, "OK")
   end
 end

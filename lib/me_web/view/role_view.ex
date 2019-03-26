@@ -39,4 +39,12 @@ defmodule MeWeb.RoleView do
       content: nil
     })
   end
+
+  def render(nil, :validate, conn) do
+    conn
+    |> send_json(404, %View{
+      description: "Role not found",
+      content: nil
+    })
+  end
 end

@@ -12,7 +12,7 @@ defmodule Me.PersonController do
 
   alias Ecto.Multi
 
-  def sign_up(attrs = %{password: _password, email: _email}) do
+  def sign_up(attrs) do
     AccountModel.insert()
     |> PersonModel.insert(attrs)
     |> Multi.merge(&RoleModel.insert/1)

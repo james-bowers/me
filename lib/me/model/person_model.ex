@@ -15,14 +15,19 @@ defmodule Me.PersonModel do
     get(%Person{id: email.person_id})
   end
 
-  def insert(multi \\ Multi.new(), %{email: email, password: password}) do
+  def insert(multi, %{email: email, password: password}) do
     multi
-    |> Multi.insert(:person, Person.changeset(%Person{}, %{}))
+    |> insert(%{})
     |> Multi.merge(fn %{person: person} ->
       EmailModel.insert(%{email: email, person_id: person.id})
     end)
     |> Multi.merge(fn %{person: person} ->
       PasswordModel.insert(%{password: password, person_id: person.id})
     end)
+  end
+
+  def insert(multi, _attrs) do
+    multi
+    |> Multi.insert(:person, Person.changeset(%Person{}, %{}))
   end
 end

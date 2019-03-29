@@ -8,13 +8,14 @@ defmodule Me.RoleModel do
     |> Repo.preload([{:person, :email}, :person])
   end
 
-  def insert(%{account: account = %Account{}, person: person = %Person{}}) do
+  def insert(%{permission_level: permission_level, account: account = %Account{}, person: person = %Person{}}) do
     Multi.new()
     |> Multi.insert(
       :role,
       insert_changeset(%{
         person_id: person.id,
-        account_id: account.id
+        account_id: account.id,
+        permission_level: permission_level
       })
     )
   end

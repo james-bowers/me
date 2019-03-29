@@ -19,4 +19,13 @@ defmodule Me.RoleRoute do
         RoleView.render({:error, reason}, :validate, conn)
     end
   end
+
+  post "/link" do
+    RoleController.link(%{
+      person_id: conn.params["person_id"],
+      account_id: conn.params["account_id"],
+      permission_level: conn.params["permission_level"] || 0
+    })
+    |> RoleView.render(:link, conn)
+  end
 end

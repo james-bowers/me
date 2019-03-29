@@ -15,7 +15,11 @@ defmodule Me.PersonController do
   def sign_up(attrs) do
     AccountModel.insert()
     |> PersonModel.insert(attrs)
-    |> Multi.merge(&RoleModel.insert/1)
+    |> Multi.merge(fn changes -> 
+      changes
+      |> Map.put(:permission_level, 0)
+      |> RoleModel.insert
+    end)
     |> Repo.transaction()
   end
 

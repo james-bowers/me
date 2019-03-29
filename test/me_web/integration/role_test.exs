@@ -4,6 +4,7 @@ defmodule Test.MeWeb.Integration.Role do
 
   alias MeWeb.Router
   alias Me.{Role, RoleController}
+  alias Test.Support.HTTPHelper
 
   @opts Router.init([])
 
@@ -81,5 +82,72 @@ defmodule Test.MeWeb.Integration.Role do
     assert {200, _headers,
             ~s({"description":"Anonymous user role validated","content":{"role":{"person_id":"dc54b524-5da1-4120-9871-a57bc814ba05","id":"894940b7-8a1c-4ac6-bc03-06f8be64eaa2","account_id":"6fb779ee-8215-4873-8275-285dccc12f9f"},"person":{"last_name":null,"id":"dc54b524-5da1-4120-9871-a57bc814ba05","first_name":null},"account":{"id":"6fb779ee-8215-4873-8275-285dccc12f9f","active":1}}})} =
              sent_resp(conn)
+  end
+
+  test "links account to person with permission level 0" do
+    assert {200, body} =
+             HTTPHelper.post("/role/link", %{
+               account_id: @account3_id,
+               person_id: @person2_id
+             })
+
+    assert %{
+             "description" => "Account linked to person",
+             "content" => %{
+               "token" => _token,
+               "role" => %{
+                 "id" => _role_id,
+                 "account_id" => "6fb779ee-8215-4873-8275-285dccc12f9f",
+                 "person_id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
+                 "permission_level" => 0,
+               }
+             }
+           } = body
+  end
+
+  test "links account to person with permission level 1" do
+    assert {200, body} =
+             HTTPHelper.post("/role/link", %{
+               account_id: @account3_id,
+               person_id: @person2_id,
+               permission_level: 1
+             })
+
+    assert %{
+             "description" => "Account linked to person",
+             "content" => %{
+               "token" => _token,
+               "role" => %{
+                 "id" => _role_id,
+                 "account_id" => "6fb779ee-8215-4873-8275-285dccc12f9f",
+                 "person_id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
+                 "permission_level" => 1,
+               }
+             }
+           } = body
+  end
+
+  test "invalid request to link (without person_id)" do
+    assert {400, body} =
+             HTTPHelper.post("/role/link", %{
+               account_id: @account3_id,
+             })
+
+    assert %{
+              "content" => %{"person_id" => ["can't be blank"]},
+              "description" => "Invalid link request"
+            } = body
+  end
+
+  test "invalid request to link (without account_id)" do
+    assert {400, body} =
+             HTTPHelper.post("/role/link", %{
+               person_id: @person2_id
+             })
+
+    assert %{
+              "content" => %{"account_id" => ["can't be blank"]},
+              "description" => "Invalid link request"
+            } = body
   end
 end

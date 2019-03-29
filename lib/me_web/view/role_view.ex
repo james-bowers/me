@@ -5,6 +5,33 @@ defmodule MeWeb.RoleView do
 
   @display_attributes [:id, :active]
 
+  def render({:error, changeset}, :link, conn) do
+    conn
+    |> send_json(400, %View{
+      description: "Invalid link request",
+      content: format_changeset(changeset)
+    })
+  end
+
+  def render(
+        {:ok,
+         %{
+           role: role = %Role{},
+           token: token
+         }},
+        :link,
+        conn
+      ) do
+    conn
+    |> send_json(200, %View{
+      description: "Account linked to person",
+      content: %{
+        token: token,
+        role: Map.take(role, [:id, :account_id, :person_id, :permission_level])
+      }
+    })
+  end
+
   def render(
         role = %Role{
           person: person = %Person{email: emails = [%Email{}]},

@@ -15,5 +15,6 @@ defmodule Me.Role do
   def changeset(account, attrs) do
     account
     |> cast(attrs, [:account_id, :person_id, :permission_level])
+    |> validate_required([:account_id, :person_id])
   end
 end

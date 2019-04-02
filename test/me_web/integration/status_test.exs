@@ -1,22 +1,14 @@
 defmodule Test.MeWeb.Integration.Status do
-  use ExUnit.Case
-  use Plug.Test
-
-  alias MeWeb.Router
-
-  @opts Router.init([])
+  use ExBowers.TestSupport.HTTP, MeWeb.Router
 
   test "/status" do
-    conn = conn(:get, "/status")
-    conn = Router.call(conn, @opts)
-
-    assert {
-             200,
-             [
-               {"cache-control", "max-age=0, private, must-revalidate"},
-               {"content-type", "text/plain; charset=utf-8"}
-             ],
-             ~s(OK)
-           } = sent_resp(conn)
+    assert {200,
+            %{
+              "status" => "ok"
+            },
+            [
+              {"cache-control", "max-age=0, private, must-revalidate"},
+              {"content-type", "text/plain; charset=utf-8"}
+            ]} = get("/status")
   end
 end

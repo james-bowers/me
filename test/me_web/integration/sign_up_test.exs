@@ -1,14 +1,11 @@
 defmodule Test.MeWeb.Integration.SignUp do
-  use ExUnit.Case
-  use Plug.Test
-
-  alias Test.Support.HTTPHelper
+  use ExBowers.TestSupport.HTTP, MeWeb.Router
 
   @valid_body_with_email_and_password %{email: "tester@ticketbuddy.co.uk", password: "password"}
   @valid_body_anonymous %{}
 
   def run_user_signup_test!(req_body) do
-    assert {200, body} = HTTPHelper.post("/person/sign-up", req_body)
+    assert {200, body, _headers} = post("/person/sign-up", req_body)
 
     assert %{
              "content" => %{

@@ -16,7 +16,7 @@ defmodule MeWeb.Router do
   get "/status" do
     conn
     |> put_resp_content_type("text/plain")
-    |> send_resp(200, "OK")
+    |> send_resp(200, ~s({"status": "ok"}))
   end
 
   forward("/person", to: PersonRoute)

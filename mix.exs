@@ -32,7 +32,8 @@ defmodule Me.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
       {:guardian, "~> 1.2.1"},
-      {:bcrypt_elixir, "~> 2.0.1"}
+      {:bcrypt_elixir, "~> 2.0.1"},
+      {:ex_bowers, path: "../ex-sdk-bowers"}
     ]
   end
 

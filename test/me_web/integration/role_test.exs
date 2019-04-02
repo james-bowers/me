@@ -1,12 +1,6 @@
 defmodule Test.MeWeb.Integration.Role do
-  use ExUnit.Case
-  use Plug.Test
-
-  alias MeWeb.Router
+  use ExBowers.TestSupport.HTTP, MeWeb.Router
   alias Me.{Role, RoleController}
-  alias Test.Support.HTTPHelper
-
-  @opts Router.init([])
 
   @role1_id "f8c8a516-ad0a-4409-aca1-40c74b48d81a"
   @role2_id "894940b7-8a1c-4ac6-bc03-06f8be64eaa2"
@@ -51,42 +45,72 @@ defmodule Test.MeWeb.Integration.Role do
   }
 
   test "validate a valid role" do
-    conn = conn(:post, "/role/validate", @valid_body)
+    assert {200, body, _headers} = post("/role/validate", @valid_body)
 
-    conn = Router.call(conn, @opts)
-
-    assert {200, _headers,
-            ~s({"description":"Role validated","content":{"role":{"person_id":"c6d771c9-debe-4276-bd32-d2ca2b2c394f","id":"f8c8a516-ad0a-4409-aca1-40c74b48d81a","account_id":"d75a9cd2-acec-46be-81e7-84a786971d44"},"person":{"last_name":"Bowers","id":"c6d771c9-debe-4276-bd32-d2ca2b2c394f","first_name":"James"},"email":["james@ticketbuddy.co.uk"],"account":{"id":"d75a9cd2-acec-46be-81e7-84a786971d44","active":1}}})} =
-             sent_resp(conn)
+    assert %{
+             "description" => "Role validated",
+             "content" => %{
+               "role" => %{
+                 "person_id" => "c6d771c9-debe-4276-bd32-d2ca2b2c394f",
+                 "id" => "f8c8a516-ad0a-4409-aca1-40c74b48d81a",
+                 "account_id" => "d75a9cd2-acec-46be-81e7-84a786971d44"
+               },
+               "person" => %{
+                 "last_name" => "Bowers",
+                 "id" => "c6d771c9-debe-4276-bd32-d2ca2b2c394f",
+                 "first_name" => "James"
+               },
+               "email" => ["james@ticketbuddy.co.uk"],
+               "account" => %{
+                 "id" => "d75a9cd2-acec-46be-81e7-84a786971d44",
+                 "active" => 1
+               }
+             }
+           } = body
   end
 
   test "validate an invalid role" do
-    conn = conn(:post, "/role/validate", @invalid_body)
-    conn = Router.call(conn, @opts)
+    assert {400, body, _headers} = post("/role/validate", @invalid_body)
 
-    assert {400, _headers, ~s({"description":"Invalid token","content":null})} = sent_resp(conn)
+    assert %{
+             "description" => "Invalid token",
+             "content" => nil
+           } = body
   end
 
   test "when a role is not found" do
-    conn = conn(:post, "/role/validate", @valid_body_but_role_not_found)
-    conn = Router.call(conn, @opts)
+    assert {404, body, _headers} = post("/role/validate", @valid_body_but_role_not_found)
 
-    assert {404, _headers, ~s({"description":"Role not found","content":null})} = sent_resp(conn)
+    assert %{
+             "description" => "Role not found",
+             "content" => nil
+           } = body
   end
 
   test "validates role for anonymous user" do
-    conn = conn(:post, "/role/validate", @valid_body_anonymous_user_role_token)
+    assert {200, body, _headers} = post("/role/validate", @valid_body_anonymous_user_role_token)
 
-    conn = Router.call(conn, @opts)
-
-    assert {200, _headers,
-            ~s({"description":"Anonymous user role validated","content":{"role":{"person_id":"dc54b524-5da1-4120-9871-a57bc814ba05","id":"894940b7-8a1c-4ac6-bc03-06f8be64eaa2","account_id":"6fb779ee-8215-4873-8275-285dccc12f9f"},"person":{"last_name":null,"id":"dc54b524-5da1-4120-9871-a57bc814ba05","first_name":null},"account":{"id":"6fb779ee-8215-4873-8275-285dccc12f9f","active":1}}})} =
-             sent_resp(conn)
+    assert %{
+             "description" => "Anonymous user role validated",
+             "content" => %{
+               "role" => %{
+                 "person_id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
+                 "id" => "894940b7-8a1c-4ac6-bc03-06f8be64eaa2",
+                 "account_id" => "6fb779ee-8215-4873-8275-285dccc12f9f"
+               },
+               "person" => %{
+                 "last_name" => nil,
+                 "id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
+                 "first_name" => nil
+               },
+               "account" => %{"id" => "6fb779ee-8215-4873-8275-285dccc12f9f", "active" => 1}
+             }
+           } = body
   end
 
   test "links account to person with permission level 0" do
-    assert {200, body} =
-             HTTPHelper.post("/role/link", %{
+    assert {200, body, _headers} =
+             post("/role/link", %{
                account_id: @account3_id,
                person_id: @person2_id
              })
@@ -99,15 +123,15 @@ defmodule Test.MeWeb.Integration.Role do
                  "id" => _role_id,
                  "account_id" => "6fb779ee-8215-4873-8275-285dccc12f9f",
                  "person_id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
-                 "permission_level" => 0,
+                 "permission_level" => 0
                }
              }
            } = body
   end
 
   test "links account to person with permission level 1" do
-    assert {200, body} =
-             HTTPHelper.post("/role/link", %{
+    assert {200, body, _headers} =
+             post("/role/link", %{
                account_id: @account3_id,
                person_id: @person2_id,
                permission_level: 1
@@ -121,33 +145,33 @@ defmodule Test.MeWeb.Integration.Role do
                  "id" => _role_id,
                  "account_id" => "6fb779ee-8215-4873-8275-285dccc12f9f",
                  "person_id" => "dc54b524-5da1-4120-9871-a57bc814ba05",
-                 "permission_level" => 1,
+                 "permission_level" => 1
                }
              }
            } = body
   end
 
   test "invalid request to link (without person_id)" do
-    assert {400, body} =
-             HTTPHelper.post("/role/link", %{
-               account_id: @account3_id,
+    assert {400, body, _headers} =
+             post("/role/link", %{
+               account_id: @account3_id
              })
 
     assert %{
-              "content" => %{"person_id" => ["can't be blank"]},
-              "description" => "Invalid link request"
-            } = body
+             "content" => %{"person_id" => ["can't be blank"]},
+             "description" => "Invalid link request"
+           } = body
   end
 
   test "invalid request to link (without account_id)" do
-    assert {400, body} =
-             HTTPHelper.post("/role/link", %{
+    assert {400, body, _headers} =
+             post("/role/link", %{
                person_id: @person2_id
              })
 
     assert %{
-              "content" => %{"account_id" => ["can't be blank"]},
-              "description" => "Invalid link request"
-            } = body
+             "content" => %{"account_id" => ["can't be blank"]},
+             "description" => "Invalid link request"
+           } = body
   end
 end

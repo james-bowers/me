@@ -33,7 +33,7 @@ defmodule Me.MixProject do
       {:poison, "~> 3.1"},
       {:guardian, "~> 1.2.1"},
       {:bcrypt_elixir, "~> 2.0.1"},
-      {:ex_bowers, path: "../ex-sdk-bowers"}
+      {:bowers_lib, path: "../bowers-lib"}
     ]
   end
 

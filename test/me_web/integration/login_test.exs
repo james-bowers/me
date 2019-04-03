@@ -1,5 +1,5 @@
 defmodule Test.MeWeb.Integration.Login do
-  use ExBowers.TestSupport.HTTP, MeWeb.Router
+  use BowersLib.TestSupport.HTTP, MeWeb.Router
 
   @valid_body %{email: "james@ticketbuddy.co.uk", password: "password"}
 

@@ -1,5 +1,5 @@
 defmodule Test.MeWeb.Integration.Status do
-  use ExBowers.TestSupport.HTTP, MeWeb.Router
+  use BowersLib.TestSupport.HTTP, MeWeb.Router
 
   test "/status" do
     assert {200,

@@ -1,5 +1,5 @@
 defmodule Test.MeWeb.Integration.Role do
-  use ExBowers.TestSupport.HTTP, MeWeb.Router
+  use BowersLib.TestSupport.HTTP, MeWeb.Router
   alias Me.{Role, RoleController}
 
   @role1_id "f8c8a516-ad0a-4409-aca1-40c74b48d81a"

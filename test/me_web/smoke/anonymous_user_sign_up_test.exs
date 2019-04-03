@@ -1,5 +1,5 @@
 defmodule Test.MeWeb.Smoke.AnonymousUserSignUp do
-  use ExBowers.TestSupport.HTTP, MeWeb.Router
+  use BowersLib.TestSupport.HTTP, MeWeb.Router
 
   test "sign up anonymous user and validate token" do
     assert {200, sign_up_body, _headers} = post("/person/sign-up")

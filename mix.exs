@@ -33,7 +33,8 @@ defmodule Me.MixProject do
       {:poison, "~> 3.1"},
       {:guardian, "~> 1.2.1"},
       {:bcrypt_elixir, "~> 2.0.1"},
-      {:bowers_lib, path: "../bowers-lib"}
+      # {:bowers_lib, path: "../bowers-lib"}
+      {:bowers_lib, git: "https://github.com/james-bowers/bowers-lib.git"}
     ]
   end
 

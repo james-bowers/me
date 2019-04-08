@@ -5,12 +5,11 @@ defmodule MeWeb.AccountView do
 
   @display_attributes [:id, :active]
 
-  def render({:ok, %{token: token, account: account = %Account{}}}, :new_account, conn) do
+  def render({:ok, %{account: account = %Account{}}}, :new_account, conn) do
     conn
     |> send_json(200, %View{
-      description: "A new anonymous account has been created.",
+      description: "A new, unlinked account has been created.",
       content: %{
-        token: token,
         account: Map.take(account, @display_attributes)
       }
     })

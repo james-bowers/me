@@ -1,6 +1,15 @@
 defmodule Me.RoleModel do
   alias Me.{Role, Repo, Account, Person}
   alias Ecto.Multi
+  import Ecto.Query
+
+  def list(%Person{id: person_id}) do
+    from(r in Role,
+      where: r.person_id == ^person_id,
+      order_by: r.inserted_at
+    )
+    |> Repo.all()
+  end
 
   def get(role = %Role{}) do
     Repo.get(Role, role.id)

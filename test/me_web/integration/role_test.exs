@@ -4,6 +4,7 @@ defmodule Test.MeWeb.Integration.Role do
 
   @role1_id "f8c8a516-ad0a-4409-aca1-40c74b48d81a"
   @role2_id "894940b7-8a1c-4ac6-bc03-06f8be64eaa2"
+  @person1_id "c6d771c9-debe-4276-bd32-d2ca2b2c394f"
   @person2_id "dc54b524-5da1-4120-9871-a57bc814ba05"
   @account3_id "6fb779ee-8215-4873-8275-285dccc12f9f"
 
@@ -172,6 +173,23 @@ defmodule Test.MeWeb.Integration.Role do
     assert %{
              "content" => %{"account_id" => ["can't be blank"]},
              "description" => "Invalid link request"
+           } = body
+  end
+
+  test "list roles associated to a person" do
+    assert {200, body, _headers} = get("/role/list-by-person/#{@person1_id}")
+
+    assert %{
+             "content" => %{
+               "roles" => [
+                 %{
+                   "account_id" => "d75a9cd2-acec-46be-81e7-84a786971d44",
+                   "id" => "f8c8a516-ad0a-4409-aca1-40c74b48d81a",
+                   "person_id" => "c6d771c9-debe-4276-bd32-d2ca2b2c394f"
+                 }
+               ]
+             },
+             "description" => "Listing roles for the given user"
            } = body
   end
 end

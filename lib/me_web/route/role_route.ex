@@ -2,7 +2,7 @@ defmodule Me.RoleRoute do
   use Plug.Router
   use Plug.Debugger
 
-  alias Me.{RoleController}
+  alias Me.{Person, RoleController, RoleModel}
   alias MeWeb.{RoleView}
 
   plug(:match)
@@ -27,5 +27,10 @@ defmodule Me.RoleRoute do
       permission_level: conn.params["permission_level"] || 0
     })
     |> RoleView.render(:link, conn)
+  end
+
+  get "/list-by-person/:person_id" do
+    RoleModel.list(%Person{id: person_id})
+    |> RoleView.render(:list_by_person, conn)
   end
 end

@@ -13,6 +13,16 @@ defmodule MeWeb.RoleView do
     })
   end
 
+  def render(roles, :list_by_person, conn) do
+    conn
+    |> send_json(200, %View{
+      description: "Listing roles for the given user",
+      content: %{
+        "roles" => format_roles(roles)
+      }
+    })
+  end
+
   def render(
         {:ok,
          %{
@@ -27,7 +37,7 @@ defmodule MeWeb.RoleView do
       description: "Account linked to person",
       content: %{
         token: token,
-        role: Map.take(role, [:id, :account_id, :person_id, :permission_level])
+        role: format_role(role)
       }
     })
   end
@@ -44,7 +54,7 @@ defmodule MeWeb.RoleView do
     |> send_json(200, %View{
       description: "Role validated",
       content: %{
-        role: Map.take(role, [:id, :account_id, :person_id]),
+        role: format_role(role),
         person: Map.take(person, [:id, :first_name, :last_name]),
         account: Map.take(account, [:id, :active]),
         email: format_emails(emails)
@@ -64,18 +74,11 @@ defmodule MeWeb.RoleView do
     |> send_json(200, %View{
       description: "Anonymous user role validated",
       content: %{
-        role: Map.take(role, [:id, :account_id, :person_id]),
+        role: format_role(role),
         person: Map.take(person, [:id, :first_name, :last_name]),
         account: Map.take(account, [:id, :active])
       }
     })
-  end
-
-  def format_emails(emails) do
-    emails
-    |> Enum.reduce([], fn email, emails_list ->
-      [email.email] ++ emails_list
-    end)
   end
 
   def render({:error, _error}, :validate, conn) do
@@ -92,5 +95,21 @@ defmodule MeWeb.RoleView do
       description: "Role not found",
       content: nil
     })
+  end
+
+  defp format_emails(emails) do
+    emails
+    |> Enum.reduce([], fn email, emails_list ->
+      [email.email] ++ emails_list
+    end)
+  end
+
+  defp format_roles(roles) do
+    roles
+    |> Enum.map(&format_role/1)
+  end
+
+  defp format_role(role = %Role{}) do
+    Map.take(role, [:id, :account_id, :person_id, :permission_level])
   end
 end
